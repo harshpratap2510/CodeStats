@@ -1,0 +1,93 @@
+import React from "react";
+import { Star, TrendingUp, ShieldCheck, Trophy, Users, Award } from "lucide-react";
+
+const CfSummaryCards = ({ summary }) => {
+  if (!summary) return null;
+
+  const cards = [
+    {
+      id: 'profile',
+      icon: (
+        <img
+          src={summary.avatar || "/default-avatar.png"}
+          alt="Profile"
+          className="w-16 h-16 rounded-full border-2 border-blue-400 object-cover"
+        />
+      ),
+      title: summary.handle,
+      value: summary.rank,
+      subValue: summary.organization || summary.country,
+      className: "md:col-span-2"
+    },
+    {
+      id: 'rating',
+      icon: <Star className="w-6 h-6 text-blue-400" />,
+      title: "Rating",
+      value: summary.rating || "—"
+    },
+    {
+      id: 'maxRating',
+      icon: <TrendingUp className="w-6 h-6 text-blue-400" />,
+      title: "Max Rating",
+      value: summary.maxRating || "—"
+    },
+    {
+      id: 'maxRank',
+      icon: <Trophy className="w-6 h-6 text-blue-400" />,
+      title: "Max Rank",
+      value: summary.maxRank || "—"
+    },
+    {
+      id: 'contribution',
+      icon: <Award className="w-6 h-6 text-blue-400" />,
+      title: "Contribution",
+      value: summary.contribution || 0
+    },
+    {
+      id: 'friends',
+      icon: <Users className="w-6 h-6 text-blue-400" />,
+      title: "Friends",
+      value: summary.friendOfCount || 0
+    }
+  ];
+
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mb-8">
+      {cards.map((card) => (
+        <div
+          key={card.id}
+          className={`relative bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700/50 p-5 shadow-lg transition-all hover:scale-[1.02] hover:shadow-blue-400/10 hover:border-blue-400/30 ${
+            card.className || ""
+          }`}
+        >
+          <div className="absolute inset-0 rounded-xl overflow-hidden">
+            <div className="absolute -inset-1 bg-blue-400/10 blur-md opacity-0 hover:opacity-100 transition-opacity"></div>
+          </div>
+
+          <div className="relative z-10 h-full flex flex-col">
+            {card.id === 'profile' ? (
+              <div className="text-center">
+                <div className="flex justify-center mb-3">{card.icon}</div>
+                <h3 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-300 to-blue-500">
+                  {card.title}
+                </h3>
+                <p className="text-sm text-blue-400 italic mt-1">{card.value}</p>
+                <p className="text-xs text-slate-400 mt-1">{card.subValue}</p>
+              </div>
+            ) : (
+              <div className="text-center flex-1 flex flex-col">
+                <div className="flex items-center justify-center gap-2 mb-1">
+                  {card.icon}
+                  <h3 className="text-lg font-semibold text-slate-200">{card.title}</h3>
+                </div>
+                <p className="text-3xl font-bold text-blue-400 my-2">{card.value}</p>
+              </div>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default CfSummaryCards;
