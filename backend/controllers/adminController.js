@@ -28,8 +28,9 @@ const loginAdmin = async (req, res) => {
         const token = jwt.sign({ id: admin._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
         res.cookie('jwt', token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'development', // Set to true if using HTTPS
-            maxAge: 3600000 // 1 hour
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", 
+            maxAge: 3600000*24 // 24 hour
         });
         res.status(200).json({ message: 'Login successful', token });
     } catch (error) {   

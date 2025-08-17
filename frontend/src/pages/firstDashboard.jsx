@@ -13,7 +13,7 @@ const Dashboard = () => {
         // Step 1: Fetch the user profile to get the username
         const profileResponse = await axios.get(
           `${BASE_URL}/api/v1/users/profile`,
-          { withCredentials: true } // Ensures cookies are sent
+          { withCredentials: true }
         );
 
         const usernam = profileResponse.data.user.username;
