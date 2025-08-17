@@ -22,7 +22,7 @@ const CodeforcesPage = () => {
       try {
         setLoading(true);
         const res = await axios.get(
-          `${BASE_URL}/api/v1/users/codeforces-profile/${cfUserId}`
+          `${BASE_URL}/api/v1/users/codeforces-profile/${cfUserId}`,{withCredentials: true}
         );
         setCfData(res.data);
         setError(null);

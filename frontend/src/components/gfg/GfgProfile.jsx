@@ -20,7 +20,7 @@ const GfgProfile = () => {
       try {
         setLoading(true);
         const res = await axios.get(
-          `${BASE_URL}/api/v1/users/gfg-profile/${gfgUserId}`
+          `${BASE_URL}/api/v1/users/gfg-profile/${gfgUserId}`,{withCredentials: true}
         );
         setData(res.data);
         setError(null);

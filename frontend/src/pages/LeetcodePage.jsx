@@ -20,7 +20,7 @@ const LeetcodePage = () => {
       try {
         setLoading(true);
         const res = await axios.get(
-          `${BASE_URL}/api/v1/users/leetcode-profile/${username}`
+          `${BASE_URL}/api/v1/users/leetcode-profile/${username}`,{withCredentials: true}
         );
         setLcData(res.data);
         setError(null);

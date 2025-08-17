@@ -28,17 +28,17 @@ const fetchLeetCodeStats = async (leetcodeUsername) => {
 const fetchCodeforcesStats = async (username) => {
   try {
     const userInfoRes = await axios.get(
-      `https://codeforces.com/api/user.info?handles=${username}`
+      `https://codeforces.com/api/user.info?handles=${username}`,{withCredentials: true}
     );
     const userData = userInfoRes.data.result[0];
 
     const submissionsRes = await axios.get(
-      `https://codeforces.com/api/user.status?handle=${username}`
+      `https://codeforces.com/api/user.status?handle=${username}`,{withCredentials: true}
     );
     const submissions = submissionsRes.data.result;
 
     const contestHistoryRes = await axios.get(
-      `https://codeforces.com/api/user.rating?handle=${username}`
+      `https://codeforces.com/api/user.rating?handle=${username}`,{withCredentials: true}   
     );
     const contestHistoryRaw = contestHistoryRes.data.result;
 
@@ -113,7 +113,7 @@ const fetchCodechefStats = async (codechefUsername) => {
 const fetchGeeksForGeeksStats = async (gfgUsername) => {
   try {
     const response = await axios.get(
-      `https://geeks-for-geeks-api.vercel.app/${gfgUsername}`
+      `https://geeks-for-geeks-api.vercel.app/${gfgUsername}`,{withCredentials: true}
     ); 
     // console.log(response.data)
     return response.data;

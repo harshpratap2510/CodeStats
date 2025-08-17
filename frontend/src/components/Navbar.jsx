@@ -37,7 +37,9 @@ const Navbar = () => {
 
  const handleLogout = async () => {
   try {
-    await axios.post(`${BASE_URL}/api/v1/users/logout`, {}, { withCredentials: true });
+    await axios.post(`${BASE_URL}/api/v1/users/logout`, {}, { 
+      withCredentials: true 
+    });
     setIsLoggedIn(false); // your state setter
     navigate('/login');
   } catch (err) {
