@@ -31,8 +31,11 @@
     "frontend": "cd frontend && npm run dev",
     "backend": "nodemon backend/index.js",
     "start": "concurrently \"npm run backend\" \"npm run frontend\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install:frontend": "npm ci --prefix frontend",
+    "build": "npm run build --prefix frontend"
+  }, 
+
   "keywords": [],
   "author": "",
   "license": "ISC",
