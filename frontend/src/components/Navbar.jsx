@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const BACKEND_URL = 'http://localhost:3000'; // Replace with your actual backend URL
+const BASE_URL=import.meta.env.VITE_BASE_URL; 
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -17,7 +17,7 @@ const Navbar = () => {
 
   const checkAuthStatus = async () => {
     try {
-      const res = await axios.get(`${BACKEND_URL}/api/v1/users/user-status`, {
+      const res = await axios.get(`${BASE_URL}/api/v1/users/user-status`, {
         withCredentials: true,
       });
 
@@ -37,7 +37,7 @@ const Navbar = () => {
 
  const handleLogout = async () => {
   try {
-    await axios.post('http://localhost:3000/api/v1/users/logout', {}, { withCredentials: true });
+    await axios.post(`${BASE_URL}/api/v1/users/logout`, {}, { withCredentials: true });
     setIsLoggedIn(false); // your state setter
     navigate('/login');
   } catch (err) {

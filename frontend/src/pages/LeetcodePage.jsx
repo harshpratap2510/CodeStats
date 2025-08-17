@@ -7,6 +7,7 @@ import LcDifficultyChart from "../components/lc/LcDifficultyChart";
 import LcSubmissionTrendChart from "../components/lc/LcSubmissionTrendChart";
 import MonthlySubmissionChart from "../components/lc/MonthlySubmissionChart";
 import Navbar from "../components/Navbar";
+const BASE_URL=import.meta.env.VITE_BASE_URL
 
 const LeetcodePage = () => {
   const { username } = useParams();
@@ -19,7 +20,7 @@ const LeetcodePage = () => {
       try {
         setLoading(true);
         const res = await axios.get(
-          `http://localhost:3000/api/v1/users/leetcode-profile/${username}`
+          `${BASE_URL}/api/v1/users/leetcode-profile/${username}`
         );
         setLcData(res.data);
         setError(null);

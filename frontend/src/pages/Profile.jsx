@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 
-const BACKEND_URL = 'http://localhost:3000';
+const BASE_URL=import.meta.env.VITE_BASE_URL;
 
 const Profile = () => {
   const [formData, setFormData] = useState({
@@ -28,7 +28,7 @@ const Profile = () => {
   const fetchUserData = async () => {
     setIsLoading(true);
     try {
-      const res = await axios.get(`${BACKEND_URL}/api/v1/users/profile`, {
+      const res = await axios.get(`${BASE_URL}/api/v1/users/profile`, {
         withCredentials: true,
       });
 
@@ -36,7 +36,7 @@ const Profile = () => {
         setFormData(res.data.user);
       }
 
-      const friendsRes = await axios.get(`${BACKEND_URL}/api/v1/users/friends`, {
+      const friendsRes = await axios.get(`${BASE_URL}/api/v1/users/friends`, {
         withCredentials: true,
       });
 
@@ -61,7 +61,7 @@ const Profile = () => {
     e.preventDefault();
     try {
       await axios.put(
-        `${BACKEND_URL}/api/v1/users/update-profile`,
+        `${BASE_URL}/api/v1/users/update-profile`,
         formData,
         { withCredentials: true }
       );
@@ -78,7 +78,7 @@ const Profile = () => {
 
     try {
       const res = await axios.get(
-        `${BACKEND_URL}/api/v1/users/friends/search?key=${newFriendUsername}`,
+        `${BASE_URL}/api/v1/users/friends/search?key=${newFriendUsername}`,
         { withCredentials: true }
       );
 
@@ -89,7 +89,7 @@ const Profile = () => {
       }
 
       await axios.post(
-        `${BACKEND_URL}/api/v1/users/friends/${matchedUser._id}`,
+        `${BASE_URL}/api/v1/users/friends/${matchedUser._id}`,
         {},
         { withCredentials: true }
       );
@@ -104,7 +104,7 @@ const Profile = () => {
 
   const handleRemoveFriend = async (friendId) => {
     try {
-      await axios.delete(`${BACKEND_URL}/api/v1/users/friends/${friendId}`, {
+      await axios.delete(`${BASE_URL}/api/v1/users/friends/${friendId}`, {
         withCredentials: true,
       });
       fetchUserData();

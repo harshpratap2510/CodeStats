@@ -6,6 +6,8 @@ import CodechefRatingChart from "../components/cc/CodechefRatingChart";
 import CodechefHeatmap from "../components/cc/CodechefHeatmap";
 import CcRankingGraph from "../components/cc/CcRankingGraph";
 
+const BASE_URL=import.meta.env.VITE_BASE_URL;
+
 const CodechefPage = () => {
   const { username } = useParams();
   const [codechefData, setCodechefData] = useState(null);
@@ -17,7 +19,7 @@ const CodechefPage = () => {
       try {
         setLoading(true);
         const res = await fetch(
-          `http://localhost:3000/api/v1/users/codechef-profile/${username}`,
+          `${BASE_URL}/api/v1/users/codechef-profile/${username}`,
           { credentials: "include" }
         );
 

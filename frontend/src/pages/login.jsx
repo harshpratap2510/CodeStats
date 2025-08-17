@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+const BASE_URL=import.meta.env.VITE_BASE_URL
 
 const Login = () => {
     const navigate = useNavigate();
@@ -17,7 +18,7 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const endpoint = 'http://localhost:3000/api/v1/users/login';
+        const endpoint = `${BASE_URL}/api/v1/users/login`;
 
         try {
             const res = await axios.post(endpoint, formData, {

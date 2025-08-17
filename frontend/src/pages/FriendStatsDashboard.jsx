@@ -6,6 +6,7 @@ import ProfileCard from '../components/ProfileCard';
 import TotalSolvedChart from '../components/TotalSolvedChart';
 import DifficultyChart from '../components/DifficultyChart';
 import CodeforcesRatingChart from '../components/CodeforcesRatingChart';
+const BASE_URL=import.meta.env.VITE_BASE_URL
 
 const FriendStatsDashboard = () => {
   const { username } = useParams();
@@ -18,7 +19,7 @@ const FriendStatsDashboard = () => {
       try {
         setLoading(true);
         const res = await axios.get(
-          `http://localhost:3000/api/v1/users/stats/${username}`,
+          `${BASE_URL}/api/v1/users/stats/${username}`,
           { withCredentials: true }
         );
         setStats(res.data);

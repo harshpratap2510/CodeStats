@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+const BASE_URL=import.meta.env.VITE_BASE_URL
 
 const Signup = () => {
-  const navigate = useNavigate(); // ✅ Correct place
+  const navigate = useNavigate(); 
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -17,7 +18,7 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:3000/api/v1/users/signup", formData, {
+      const res = await axios.post(`${BASE_URL}/api/v1/users/signup`, formData, {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });

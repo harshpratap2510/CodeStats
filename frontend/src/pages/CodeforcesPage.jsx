@@ -10,6 +10,7 @@ import ProblemIndexChart from "../components/codeforces/ProblemIndexChart.jsx";
 import ProblemRatingChart from "../components/codeforces/ProblemRatingChart.jsx";
 import DifficultyProgressionChart from "../components/codeforces/DifficultyProgressiveChart.jsx";
 
+const BASE_URL=import.meta.env.VITE_BASE_URL
 const CodeforcesPage = () => {
   const { cfUserId } = useParams();
   const [cfData, setCfData] = useState(null);
@@ -21,7 +22,7 @@ const CodeforcesPage = () => {
       try {
         setLoading(true);
         const res = await axios.get(
-          `http://localhost:3000/api/v1/users/codeforces-profile/${cfUserId}`
+          `${BASE_URL}/api/v1/users/codeforces-profile/${cfUserId}`
         );
         setCfData(res.data);
         setError(null);

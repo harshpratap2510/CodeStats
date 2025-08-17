@@ -1,6 +1,6 @@
 import { useState } from 'react'  
 import { Routes, Route } from 'react-router-dom'
-import Signup from './pages/signup.jsx'
+import Signup from './pages/Signup.jsx'
 import Login from './pages/login.jsx'
 import Home from './pages/Home.jsx'
 import Profile from './pages/Profile.jsx'
@@ -16,8 +16,7 @@ import CodechefPage from './pages/CodechefPage.jsx'
 import FriendStatsDashboard from './pages/FriendStatsDashboard.jsx'
 
 
-
-function App() { 
+function App() {
 
   return (
     <> 

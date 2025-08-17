@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import StatsDashboard from './StatsDashboard.jsx';
-
+const BASE_URL=import.meta.env.VITE_BASE_URL;
 const Dashboard = () => {
   const [stats, setStats] = useState(null);
   const [username, setUsername] = useState(null);
@@ -12,7 +12,7 @@ const Dashboard = () => {
       try {
         // Step 1: Fetch the user profile to get the username
         const profileResponse = await axios.get(
-          'http://localhost:3000/api/v1/users/profile',
+          `${BASE_URL}/api/v1/users/profile`,
           { withCredentials: true } // Ensures cookies are sent
         );
 
@@ -21,7 +21,7 @@ const Dashboard = () => {
 
         // Step 2: Use the retrieved username to fetch user stats
         const statsResponse = await axios.get(
-          `http://localhost:3000/api/v1/users/stats/${usernam}`,
+          `${BASE_URL}/api/v1/users/stats/${usernam}`,
           { withCredentials: true }
         );
 

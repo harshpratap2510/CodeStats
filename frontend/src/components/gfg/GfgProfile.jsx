@@ -7,6 +7,7 @@ import GFGDifficultyChart from "./GFGDifficultyChart.jsx";
 import DifficultyBarChart from "./DifficultyBarChart.jsx";
 import ProblemTable from "./ProblemTable.jsx";
 import Navbar from "../Navbar.jsx";
+const BASE_URL=import.meta.env.VITE_BASE_URL
 
 const GfgProfile = () => {
   const { gfgUserId } = useParams();
@@ -19,7 +20,7 @@ const GfgProfile = () => {
       try {
         setLoading(true);
         const res = await axios.get(
-          `http://localhost:3000/api/v1/users/gfg-profile/${gfgUserId}`
+          `${BASE_URL}/api/v1/users/gfg-profile/${gfgUserId}`
         );
         setData(res.data);
         setError(null);
