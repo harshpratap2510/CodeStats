@@ -24,6 +24,8 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+app.set("trust proxy", 1);
 app.use(cors({
   origin: ["http://localhost:5173","https://code-stats-c618.vercel.app"],
   credentials: true,
