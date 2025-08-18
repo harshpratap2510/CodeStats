@@ -6,6 +6,7 @@ import TotalSolvedChart from '../components/TotalSolvedChart';
 import DifficultyChart from '../components/DifficultyChart';
 import CodeforcesRatingChart from '../components/CodeforcesRatingChart';
 import Navbar from '../components/Navbar';
+import { useEffect } from 'react';
 
 const truthy = (v) => {
   if (v == null) return false;
