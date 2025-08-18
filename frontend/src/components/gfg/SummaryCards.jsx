@@ -1,16 +1,17 @@
-// SummaryCards.jsx
 import React from "react";
 import { BarChart, Flame, Trophy, Target, Activity } from "lucide-react";
+import defaultAvatar from "../../assets/default-avatar.png"; // NEW
 
 const SummaryCards = ({ info }) => {
   if (!info) return null;
+  const avatar = (info?.profilePicture && /^https?:\/\//i.test(info.profilePicture)) ? info.profilePicture : defaultAvatar;
 
   const cards = [
     {
       id: 'profile',
       icon: (
         <img
-          src={info.profilePicture || "/default-avatar.png"}
+          src={avatar}
           alt="Profile"
           className="w-16 h-16 rounded-full border-2 border-green-400 object-cover"
         />
