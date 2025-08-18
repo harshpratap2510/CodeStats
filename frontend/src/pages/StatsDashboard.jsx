@@ -13,27 +13,26 @@ const truthy = (v) => {
   return Boolean(v);
 };
 
-// Normalize checks across APIs that can return null/error or slightly different shapes.
 const isAvailable = {
-  leetcode: (d) =>
-    !!(
-      d &&
-      !d.error &&
-      (truthy(d.username) ||
-        truthy(d.handle) ||
-        truthy(d.profile?.userSlug) ||
-        truthy(d.matchedUser?.username))
-    ),
-  // proxor(CodeChef) often returns { handle, avatar, rating, ... } (sometimes name/username present)
-  codechef: (d) =>
-    !!(d && !d.error && (truthy(d.handle) || truthy(d.username) || truthy(d.name))),
-  codeforces: (d) => !!(d && !d.error && truthy(d.handle)),
-  gfg: (d) => !!(d && !d.error && truthy(d.info?.userName)),
+  leetcode: (d) => d && !d.error && (
+    truthy(d.username) || 
+    truthy(d.handle) || 
+    truthy(d.profile?.userSlug) || 
+    truthy(d.matchedUser?.username)
+  ),
+  codechef: (d) => d && !d.error && (
+    truthy(d.handle) || 
+    truthy(d.username) || 
+    truthy(d.name)
+  ),
+  codeforces: (d) => d && !d.error && truthy(d.handle),
+  gfg: (d) => d && !d.error && truthy(d.info?.userName),
 };
 
 const StatsDashboard = ({ username, leetcode, codechef, codeforces, gfg }) => {
   const navigate = useNavigate();
 
+  // Check if we have valid data for each platform
   const platformStatus = {
     leetcode: isAvailable.leetcode(leetcode),
     codechef: isAvailable.codechef(codechef),
@@ -41,26 +40,24 @@ const StatsDashboard = ({ username, leetcode, codechef, codeforces, gfg }) => {
     gfg: isAvailable.gfg(gfg),
   };
 
+  // Check if we have at least one valid profile
   const hasAnyProfile = Object.values(platformStatus).some(Boolean);
+
+  // If no profiles exist at all, show the AddProfilePrompt
   if (!hasAnyProfile) {
     return <AddProfilePrompt username={username} />;
   }
 
   const handlePlatformClick = (platformKey) => {
     if (platformStatus[platformKey]) return true;
-    const platformName =
-      {
-        leetcode: 'LeetCode',
-        codechef: 'CodeChef',
-        codeforces: 'Codeforces',
-        gfg: 'GeeksForGeeks',
-      }[platformKey] || 'Platform';
+    const platformName = {
+      leetcode: 'LeetCode',
+      codechef: 'CodeChef',
+      codeforces: 'Codeforces',
+      gfg: 'GeeksForGeeks',
+    }[platformKey] || 'Platform';
 
-    if (
-      window.confirm(
-        `${platformName} profile not found. Would you like to add it now?`
-      )
-    ) {
+    if (window.confirm(`${platformName} profile not found. Would you like to add it now?`)) {
       navigate('/profile');
     }
     return false;
@@ -152,9 +149,7 @@ const StatsDashboard = ({ username, leetcode, codechef, codeforces, gfg }) => {
 
         {/* Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {(platformStatus.leetcode ||
-            platformStatus.codeforces ||
-            platformStatus.gfg) && (
+          {(platformStatus.leetcode || platformStatus.codeforces || platformStatus.gfg) && (
             <div className="bg-slate-800 p-6 rounded-xl shadow-lg">
               <TotalSolvedChart
                 leetcode={platformStatus.leetcode ? leetcode : null}
@@ -215,36 +210,24 @@ const AddProfilePrompt = ({ username }) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800">
       <Navbar />
-
+      
       <div className="flex flex-col items-center justify-center py-20 px-4 text-center">
         <div className="max-w-2xl bg-slate-800 rounded-2xl shadow-xl p-8 md:p-12">
           <div className="w-24 h-24 bg-yellow-400/10 rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-12 w-12 text-yellow-400"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-
+          
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
             Complete Your Profile
           </h2>
-
+          
           <p className="text-slate-300 mb-8">
-            To view your comprehensive stats dashboard, please add your competitive
-            programming platform usernames to your profile. We'll use these to fetch
-            your latest performance data.
+            To view your comprehensive stats dashboard, please add your competitive programming 
+            platform usernames to your profile. We'll use these to fetch your latest performance data.
           </p>
-
+          
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
             <div className="bg-slate-700 p-4 rounded-lg border-l-4 border-yellow-400">
               <h3 className="font-medium text-white mb-2">Required Information</h3>
@@ -259,16 +242,11 @@ const AddProfilePrompt = ({ username }) => {
                 ))}
               </ul>
             </div>
-
+            
             <div className="bg-slate-700 p-4 rounded-lg border-l-4 border-blue-400">
               <h3 className="font-medium text-white mb-2">What You'll Get</h3>
               <ul className="text-slate-300 text-sm space-y-1">
-                {[
-                  'Comprehensive stats dashboard',
-                  'Problem difficulty analysis',
-                  'Rating progress charts',
-                  'Comparison with friends',
-                ].map((item) => (
+                {['Comprehensive stats dashboard', 'Problem difficulty analysis', 'Rating progress charts', 'Comparison with friends'].map((item) => (
                   <li key={item} className="flex items-center">
                     <svg className="w-4 h-4 mr-2 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
@@ -279,24 +257,13 @@ const AddProfilePrompt = ({ username }) => {
               </ul>
             </div>
           </div>
-
-          <Link
-            to={`/profile`}
+          
+          <Link 
+            to="/profile"
             className="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 text-slate-900 font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all hover:scale-105 transform"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 mr-2"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-              />
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
             </svg>
             Complete Your Profile
           </Link>
