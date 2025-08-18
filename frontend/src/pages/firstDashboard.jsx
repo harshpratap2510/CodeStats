@@ -76,12 +76,18 @@ const FirstDashboard = () => {
   }, []);
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-yellow-400" />
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 flex flex-col items-center justify-center">
+      <div className="relative">
+        <div className="w-24 h-24 rounded-full border-4 border-yellow-400/30"></div>
+        <div className="absolute top-0 left-0 w-24 h-24 rounded-full border-4 border-yellow-400 border-t-transparent animate-spin"></div>
       </div>
-    );
-  }
+      <p className="mt-6 text-lg font-medium text-yellow-300">
+        Fetching your competitive stats...
+      </p>
+    </div>
+  );
+}
 
   return (
     <StatsDashboard
