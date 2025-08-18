@@ -62,8 +62,10 @@ import axios from 'axios';
   
       res.cookie('jwt', token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production', // only use `secure` in production
-        maxAge: 3600000 *24, // 1 hour
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        path: '/',
+        maxAge: 3600000 * 24, 
       });
   
       res.status(200).json({ message: 'Login successful', token });
@@ -85,7 +87,7 @@ const logoutUser = async (req, res) => {
     res.clearCookie('jwt', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'none', // or 'lax' depending on your CORS config
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       path: '/',        // must match the original path
     });
     return res.status(200).json({ message: 'Logout successful' });
