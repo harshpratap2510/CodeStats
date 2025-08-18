@@ -1,25 +1,51 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import api from '../lib/api';
+import axios from 'axios';
+
+const BASE_URL=import.meta.env.VITE_BASE_URL; 
 
 const Navbar = () => {
-  const { user, loading, setUser } = useAuth();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+
   const navigate = useNavigate();
   const location = useLocation();
 
-  const isLoggedIn = !!user;
+  useEffect(() => {
+    checkAuthStatus();
+  }, []);
 
-  const handleLogout = async () => {
+  const checkAuthStatus = async () => {
     try {
-      await api.post('/api/v1/users/logout', {}, { withCredentials: true });
-    } catch (err) {
-      console.warn('Logout error:', err?.response?.status || err?.message);
-    } finally {
-      setUser(null);
-      navigate('/login');
+      const res = await axios.get(`${BASE_URL}/api/v1/users/user-status`, {
+        withCredentials: true,
+      });
+
+      if (res.data && res.data.ok) {
+        setIsLoggedIn(true);
+        setIsAdmin(res.data.isAdmin || false); // assuming your response includes isAdmin
+      } else {
+        setIsLoggedIn(false);
+        setIsAdmin(false);
+      }
+    } catch (error) {
+      console.error('Auth check failed:', error);
+      setIsLoggedIn(false);
+      setIsAdmin(false);
     }
   };
+
+ const handleLogout = async () => {
+  try {
+    await axios.post(`${BASE_URL}/api/v1/users/logout`, {}, { 
+      withCredentials: true 
+    });
+    setIsLoggedIn(false); // your state setter
+    navigate('/login');
+  } catch (err) {
+    console.error('Logout error:', err);
+  }
+};
 
   const navItems = [
     ...(!isLoggedIn ? [{ label: 'Home', path: '/' }] : []),
@@ -37,28 +63,28 @@ const Navbar = () => {
             <li key={path}>
               <Link
                 to={path}
-                className={`text-lg font-medium transition-all duration-200 ${
-                  location.pathname === path
-                    ? 'text-yellow-300 underline underline-offset-4'
-                    : 'text-white hover:text-yellow-400'
-                }`}
+                className={`text-lg font-medium transition-all duration-200 
+                  ${
+                    location.pathname === path
+                      ? 'text-yellow-300 underline underline-offset-4'
+                      : 'text-white hover:text-yellow-400'
+                  }`}
               >
                 {label}
               </Link>
             </li>
           ))}
 
-          {loading ? (
-            <li className="text-slate-300 text-sm">Loading…</li>
-          ) : !isLoggedIn ? (
+          {!isLoggedIn ? (
             <li>
               <Link
                 to="/login"
-                className={`text-lg font-medium transition-all duration-200 ${
-                  location.pathname === '/login'
-                    ? 'text-yellow-300 underline underline-offset-4'
-                    : 'text-white hover:text-yellow-400'
-                }`}
+                className={`text-lg font-medium transition-all duration-200 
+                  ${
+                    location.pathname === '/login'
+                      ? 'text-yellow-300 underline underline-offset-4'
+                      : 'text-white hover:text-yellow-400'
+                  }`}
               >
                 Login/Signup
               </Link>
