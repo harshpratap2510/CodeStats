@@ -9,7 +9,7 @@ const CfSummaryCards = ({ summary }) => {
       id: 'profile',
       icon: (
         <img
-          src={summary.avatar || "/user (1).png"}
+          src={summary.avatar || "/default-avatar.png"}
           alt="Profile"
           className="w-16 h-16 rounded-full border-2 border-blue-400 object-cover"
         />

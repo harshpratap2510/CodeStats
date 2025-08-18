@@ -131,7 +131,7 @@ const Profile = () => {
           <div className="flex flex-col md:flex-row items-center gap-6 mb-8 p-6 bg-slate-800 rounded-2xl shadow-xl">
             <div className="relative group">
               <img
-                src={formData.profilePicture || '/user (1).png'}
+                src={formData.profilePicture || '/default-avatar.png'}
                 alt="Profile"
                 className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover border-4 border-yellow-400 shadow-lg transition-transform group-hover:scale-105"
               />
@@ -255,7 +255,7 @@ const Profile = () => {
                           className="flex items-center space-x-3 flex-grow"
                         >
                           <img
-                            src={friend.profilePicture || '/user (1).png'}
+                            src={friend.profilePicture || '/default-avatar.png'}
                             alt={friend.username}
                             className="w-10 h-10 rounded-full border-2 border-yellow-400"
                           />
