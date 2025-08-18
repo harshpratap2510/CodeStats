@@ -1,62 +1,84 @@
+// src/pages/firstDashboard.jsx
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import StatsDashboard from './StatsDashboard.jsx';
-const BASE_URL=import.meta.env.VITE_BASE_URL;
-const Dashboard = () => {
-  const [stats, setStats] = useState(null);
-  const [username, setUsername] = useState(null);
+import StatsDashboard from './StatsDashboard';
+
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+
+const FirstDashboard = () => {
   const [loading, setLoading] = useState(true);
+  const [username, setUsername] = useState('');
+  const [stats, setStats] = useState({
+    leetcode: null,
+    codechef: null,
+    codeforces: null,
+    gfg: null,
+  });
 
   useEffect(() => {
-    const fetchStats = async () => {
+    let isMounted = true;
+
+    const load = async () => {
       try {
-        // Step 1: Fetch the user profile to get the username
-        const profileResponse = await axios.get(
-          `${BASE_URL}/api/v1/users/profile`,
-          { withCredentials: true }
-        );
+        // 1) Get current user (to know username/handles)
+        const me = await axios.get(`${BASE_URL}/api/v1/users/profile`, { withCredentials: true });
+        if (!isMounted) return;
 
-        const usernam = profileResponse.data.user.username;
-        setUsername(usernam);
+        const u = me?.data?.user?.username || '';
+        setUsername(u);
 
-        // Step 2: Use the retrieved username to fetch user stats
-        const statsResponse = await axios.get(
-          `${BASE_URL}/api/v1/users/stats/${usernam}`,
-          { withCredentials: true }
-        );
+        if (!u) {
+          // not logged in or no username – let StatsDashboard show prompt
+          setStats({ leetcode: null, codechef: null, codeforces: null, gfg: null });
+          setLoading(false);
+          return;
+        }
 
-        console.log("Stats Response:", statsResponse.data.codeforces);
-        setStats(statsResponse.data);
+        // 2) Try combined stats endpoint first
+        try {
+          const all = await axios.get(`${BASE_URL}/api/v1/users/stats/${u}`, { withCredentials: true });
+          if (!isMounted) return;
 
-      } catch (error) {
-        console.error('Error fetching stats:', error);
+          const { leetcode = null, codechef = null, codeforces = null, gfg = null } = all.data || {};
+          setStats({ leetcode, codechef, codeforces, gfg });
+        } catch {
+          // 3) Fallback: fetch individually if combined isn’t available
+          const [lc, cc, cf, gg] = await Promise.allSettled([
+            axios.get(`${BASE_URL}/api/v1/users/stats/leetcode/${u}`, { withCredentials: true }),
+            axios.get(`${BASE_URL}/api/v1/users/stats/codechef/${u}`, { withCredentials: true }),
+            axios.get(`${BASE_URL}/api/v1/users/stats/codeforces/${u}`, { withCredentials: true }),
+            axios.get(`${BASE_URL}/api/v1/users/stats/gfg/${u}`, { withCredentials: true }),
+          ]);
+
+          if (!isMounted) return;
+
+          setStats({
+            leetcode: lc.status === 'fulfilled' ? lc.value.data : null,
+            codechef: cc.status === 'fulfilled' ? cc.value.data : null,
+            codeforces: cf.status === 'fulfilled' ? cf.value.data : null,
+            gfg: gg.status === 'fulfilled' ? gg.value.data : null,
+          });
+        }
+      } catch {
+        // Not logged in or profile fetch failed – show prompt
+        if (!isMounted) return;
+        setUsername('');
+        setStats({ leetcode: null, codechef: null, codeforces: null, gfg: null });
       } finally {
-        setLoading(false);
+        if (isMounted) setLoading(false);
       }
     };
 
-    fetchStats();
+    load();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-900 flex flex-col items-center justify-center">
-        <div className="loader ease-linear rounded-full border-8 border-t-8 border-yellow-400 h-24 w-24 mb-4 animate-spin"></div>
-        <p className="text-white text-xl font-semibold">
-          Fetching {username ? `${username}'s` : 'user'} stats...
-        </p>
-      </div>
-    );
-  }
-
-  if (!stats) {
-    return <div className="text-white text-center">Error loading stats.</div>;
-  }
-
-  if (!stats.leetcode && !stats.codeforces && !stats.codechef && !stats.gfg) {
-    return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
-        <p className="text-white text-lg">No data available.</p>
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-yellow-400" />
       </div>
     );
   }
@@ -72,4 +94,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default FirstDashboard;
