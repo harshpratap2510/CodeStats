@@ -11,7 +11,7 @@ const ProfileCard = ({ platform, data, isAvailable = true }) => {
       hoverColor: "hover:shadow-orange-500/20 hover:border-orange-500/70",
       icon: "https://img.icons8.com/external-tal-revivo-shadow-tal-revivo/24/external-level-up-your-coding-skills-and-quickly-land-a-job-logo-shadow-tal-revivo.png",
       username: data?.handle ?? data?.username ?? data?.profile?.userSlug ?? data?.matchedUser?.username ?? "Not set",
-      avatar: data?.avatar ?? data?.profile?.userAvatar ?? data?.matchedUser?.profile?.userAvatar ?? "/default-avatar.png",
+      avatar: data?.avatar ?? data?.profile?.userAvatar ?? data?.matchedUser?.profile?.userAvatar ?? "/user (1).png",
       stats: [
         { label: "Solved", value: getLeetcodeSolved(data) },
         { label: "Rank", value: data?.ranking ?? data?.profile?.ranking ?? data?.matchedUser?.profile?.ranking ?? "—" }
@@ -23,7 +23,7 @@ const ProfileCard = ({ platform, data, isAvailable = true }) => {
       hoverColor: "hover:shadow-blue-500/20 hover:border-blue-500/70",
       icon: "https://img.icons8.com/external-tal-revivo-shadow-tal-revivo/24/external-codeforces-programming-competitions-and-contests-programming-community-logo-shadow-tal-revivo.png",
       username: data?.handle ?? "Not set",
-      avatar: data?.avatar ?? "/default-avatar.png",
+      avatar: data?.avatar ?? "/user (1).png",
       stats: [
         { label: "Rating", value: data?.rating ?? "—" },
         { label: "Rank", value: data?.rank ?? "—" }
@@ -35,7 +35,7 @@ const ProfileCard = ({ platform, data, isAvailable = true }) => {
       hoverColor: "hover:shadow-red-500/20 hover:border-red-500/70",
       icon: "https://img.icons8.com/external-tal-revivo-shadow-tal-revivo/24/external-codechef-online-programming-competition-and-community-logo-shadow-tal-revivo.png",
       username: data?.username ?? data?.name ?? "Not set",
-      avatar: data?.profile ?? data?.avatar ?? "/default-avatar.png",
+      avatar: data?.profile ?? data?.avatar ?? "/user (1).png",
       stats: [
         { label: "Rating", value: data?.currentRating ?? data?.rating ?? "—" },
         { label: "Stars", value: data?.stars ?? "—" }
@@ -47,7 +47,7 @@ const ProfileCard = ({ platform, data, isAvailable = true }) => {
       hoverColor: "hover:shadow-green-500/20 hover:border-green-500/70",
       icon: "https://media.geeksforgeeks.org/gfg-gg-logo.svg",
       username: data?.info?.userName ?? "Not set",
-      avatar: data?.info?.profilePicture ?? "/default-avatar.png",
+      avatar: data?.info?.profilePicture ?? "/user (1).png",
       stats: [
         { label: "Solved", value: data?.info?.totalProblemsSolved ?? "—" },
         { label: "Score", value: data?.info?.codingScore ?? "—" }
@@ -96,7 +96,7 @@ const ProfileCard = ({ platform, data, isAvailable = true }) => {
           <img
             src={currentPlatform.avatar}
             alt={`${currentPlatform.name} avatar`}
-            onError={(e) => (e.currentTarget.src = "/default-avatar.png")}
+            onError={(e) => (e.currentTarget.src = "/user (1).png")}
             className={`w-14 h-14 rounded-full border-2 object-cover ${
               isAvailable ? "border-white/20" : "border-slate-600/50"
             }`}

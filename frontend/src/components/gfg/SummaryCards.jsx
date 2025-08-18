@@ -10,7 +10,7 @@ const SummaryCards = ({ info }) => {
       id: 'profile',
       icon: (
         <img
-          src={info.profilePicture || "/default-avatar.png"}
+          src={info.profilePicture || "/user (1).png"}
           alt="Profile"
           className="w-16 h-16 rounded-full border-2 border-green-400 object-cover"
         />
