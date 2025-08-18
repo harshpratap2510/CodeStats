@@ -122,7 +122,7 @@ const Profile = () => {
         <div className="absolute top-0 left-0 w-24 h-24 rounded-full border-4 border-yellow-400 border-t-transparent animate-spin"></div>
       </div>
       <p className="mt-6 text-lg font-medium text-yellow-300">
-        {username ? `Fetching ${username}'s competitive stats...` : 'Fetching your competitive stats...'}
+        {formData.username ? `Fetching ${formData.username}'s competitive stats...` : 'Fetching your competitive stats...'}
       </p>
     </div>
   );
