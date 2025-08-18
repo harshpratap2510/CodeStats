@@ -27,7 +27,7 @@ app.use(cookieParser());
 
 app.set("trust proxy", 1);
 app.use(cors({
-  origin: ["http://localhost:5173",process.env.FRONTEND_URL,  ],
+  origin: ["http://localhost:5173","https://code-stats-c618.vercel.app"],
   credentials: true,
 }));
 // app.use('/uploads', express.static(path.join(path.resolve(__dirname), 'uploads')));

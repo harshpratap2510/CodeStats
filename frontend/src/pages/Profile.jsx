@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
-import defaultAvatar from '../assets/default-avatar.png';
 
 const BASE_URL=import.meta.env.VITE_BASE_URL;
 
@@ -132,10 +131,10 @@ const Profile = () => {
           <div className="flex flex-col md:flex-row items-center gap-6 mb-8 p-6 bg-slate-800 rounded-2xl shadow-xl">
             <div className="relative group">
               <img
-  src={formData.profilePicture || defaultAvatar}
-  alt="Profile"
-  className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover border-4 border-yellow-400 shadow-lg transition-transform group-hover:scale-105"
-/>
+                src={formData.profilePicture || '/default-avatar.png'}
+                alt="Profile"
+                className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover border-4 border-yellow-400 shadow-lg transition-transform group-hover:scale-105"
+              />
               <div className="absolute inset-0 rounded-full border-4 border-transparent group-hover:border-yellow-300 opacity-0 group-hover:opacity-100 transition-all"></div>
             </div>
             <div className="text-center md:text-left">
@@ -256,10 +255,10 @@ const Profile = () => {
                           className="flex items-center space-x-3 flex-grow"
                         >
                           <img
-  src={friend.profilePicture || defaultAvatar}
-  alt={friend.username}
-  className="w-10 h-10 rounded-full border-2 border-yellow-400"
-/>
+                            src={friend.profilePicture || '/default-avatar.png'}
+                            alt={friend.username}
+                            className="w-10 h-10 rounded-full border-2 border-yellow-400"
+                          />
                           <span className="font-medium text-white group-hover:text-yellow-300 transition">
                             {friend.username}
                           </span>

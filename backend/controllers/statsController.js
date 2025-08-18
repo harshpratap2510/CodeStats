@@ -130,9 +130,12 @@ const fetchGeeksForGeeksStats = async (gfgUsername) => {
 
 const getAllPlatformStats = async (req, res) => {
   const { username } = req.params;
+
   try {
     const user = await User.findOne({ username });
-    if (!user) return res.status(404).json({ error: "User not found" });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
 
     const {
       leetcodeHandle: leetcodeUsername,
@@ -141,22 +144,24 @@ const getAllPlatformStats = async (req, res) => {
       gfgHandle: gfgUsername,
     } = user;
 
-    const results = await Promise.allSettled([
-      leetcodeUsername ? fetchLeetCodeStats(leetcodeUsername) : Promise.resolve(null),
-      codechefUsername ? fetchCodechefStats(codechefUsername) : Promise.resolve(null),
-      codeforcesUsername ? fetchCodeforcesStats(codeforcesUsername) : Promise.resolve(null),
-      gfgUsername ? fetchGeeksForGeeksStats(gfgUsername) : Promise.resolve(null),
+    const [leetcode, codechef, codeforces, gfg] = await Promise.all([
+      fetchLeetCodeStats(leetcodeUsername),
+      fetchCodechefStats(codechefUsername), // now via proxor
+      fetchCodeforcesStats(codeforcesUsername),
+      fetchGeeksForGeeksStats(gfgUsername),
     ]);
 
-    const [leetcode, codechef, codeforces, gfg] = results.map(r => r.status === 'fulfilled' ? r.value : { error: r.reason?.message || 'failed' });
-
-    res.status(200).json({ leetcode, codechef, codeforces, gfg });
+    res.status(200).json({
+      leetcode,
+      codechef,
+      codeforces,
+      gfg,
+    });
   } catch (err) {
-    console.error("Combined Error:", err);
+    console.error("Combined Error:", err.message);
     res.status(500).json({ error: "Failed to fetch data from all platforms" });
   }
 };
-
 
 /* ==========================
    Individual Controllers

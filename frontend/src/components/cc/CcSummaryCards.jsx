@@ -1,17 +1,15 @@
 import React from "react";
 import { Star, TrendingUp, ShieldCheck, Trophy, Users } from "lucide-react";
-import defaultAvatar from "../../assets/default-avatar.png"; // NEW
 
 const CcSummaryCards = ({ summary }) => {
   if (!summary) return null;
-  const avatar = (summary?.avatar && /^https?:\/\//i.test(summary.avatar)) ? summary.avatar : defaultAvatar;
 
   const cards = [
     {
       id: 'profile',
       icon: (
         <img
-          src={avatar}
+          src={summary.avatar || "/default-avatar.png"}
           alt="Profile"
           className="w-16 h-16 rounded-full border-2 border-red-400 object-cover"
         />
@@ -20,8 +18,7 @@ const CcSummaryCards = ({ summary }) => {
       value: summary.rank,
       subValue: summary.organization || summary.country,
       className: "md:col-span-2"
-    }, 
-
+    },
     {
       id: 'rating',
       icon: <Star className="w-6 h-6 text-red-400" />,
